@@ -1,9 +1,14 @@
-import React from "react";
 import { useForm } from "react-hook-form";
-import Button from "../../Components/Button";
+import Button from "../../../Components/Button";
 import { Link } from "react-router";
+import useAuth from "../../../Contexts/useAuth";
+import { useState } from "react";
+
 
 const RegisterPage = () => {
+const {googleLogin, setUser, registerUser,updateUserProfile, user} = useAuth();
+const [isError, setIsError] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -12,8 +17,46 @@ const RegisterPage = () => {
 
   const handleRegister = (data) => {
     console.log("Form Submitted:", data);
-    // TODO: integrate with backend / Firebase auth
+    registerUser(data.email, data.password)
+    .then(result=>{
+      const createdUser = result.user;
+      console.log(createdUser);
+      setUser(createdUser);
+      // Update user profile with name and photo URL
+      updateUserProfile({
+        displayName: data.name,
+        photoURL: data.photoUrl
+      })
+      .then(()=>{
+        console.log("User profile updated successfully");
+      })
+      .catch(error=>{
+        console.log("Error updating user profile:", error.message);
+      })})
+    .catch(error=>{
+      console.log("Error registering user:", error.message);
+      setIsError(error.message);
+
+    })
   };
+
+  console.log(user)
+
+  const handleGoogleLogin = ()=>{
+
+    googleLogin()
+    .then(result=>{
+      const loggedUser = result.user;
+      console.log(loggedUser);
+      setUser(loggedUser);
+    })
+    .catch(error=>{
+      console.log(error.message);
+      setIsError(error.message);
+    })
+
+
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
@@ -47,7 +90,7 @@ const RegisterPage = () => {
               <input
                 type="text"
                 {...register("name", { required: "Name is required" })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none focus:border-none"
               />
               {errors.name && <p className="text-red-500 text-sm m-1">{errors.name.message}</p>}
             </div>
@@ -61,7 +104,7 @@ const RegisterPage = () => {
                   required: "Email is required",
                   pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" },
                 })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none focus:border-none"
               />
               {errors.email && <p className="text-red-500 text-sm m-1">{errors.email.message}</p>}
             </div>
@@ -72,7 +115,7 @@ const RegisterPage = () => {
               <input
                 type="text"
                 {...register("photoUrl", { required: "Photo URL is required" })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none focus:border-none"
               />
               {errors.photoUrl && <p className="text-red-500 text-sm m-1">{errors.photoUrl.message}</p>}
             </div>
@@ -93,13 +136,14 @@ const RegisterPage = () => {
                       "Password must contain at least one special character",
                   },
                 })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none focus:border-none"
               />
               {errors.password && <p className="text-red-500 text-sm m-1">{errors.password.message}</p>}
             </div>
 
             {/* Register Button */}
-            <Button label="Register" variant="primary" className="w-full" />
+            <Button label="Register" variant="primary" className="w-full cursor-pointer" />
+            <p className="text-red-500 text-sm m-1">{isError}</p>
           </form>
 
           {/* Divider */}
@@ -112,8 +156,8 @@ const RegisterPage = () => {
           {/* Google Login Button */}
           <button
             type="button"
-            onClick={() => console.log("Google login clicked")}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-full font-semibold text-sm 
+            onClick={handleGoogleLogin}
+            className="w-full flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-full font-semibold text-sm 
             border border-gray-300 shadow-sm bg-white hover:bg-gray-50 transition-all duration-300 ease-in-out"
           >
             <img
