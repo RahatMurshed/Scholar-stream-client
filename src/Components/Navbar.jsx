@@ -35,8 +35,13 @@ const Navbar = () => {
   
   <div className="navbar-end ">
     
+    <Link to='/login'>
     <Button className='hover:scale-110 hover:underline' label="Login" variant="outline"></Button>
+    </Link>
+
+    <Link to='/register'>
     <Button label="Register" variant="primary"></Button>
+    </Link>
   </div>
 </div>
     );
