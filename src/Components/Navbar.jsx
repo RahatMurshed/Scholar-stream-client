@@ -2,7 +2,7 @@ import React from 'react';
 import Button from './Button';
 import logo from '../assets/logo.png';
 import { Link, NavLink } from 'react-router';
-import useAuth from '../Contexts/useAuth';
+import  useAuth  from '../Hooks/useAuth';
 import DropdownProfile from './DropdownProfile';
 const Navbar = () => {
 

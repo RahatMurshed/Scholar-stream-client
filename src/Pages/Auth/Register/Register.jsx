@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "../../../Components/Button";
 import { Link } from "react-router";
-import useAuth from "../../../Contexts/useAuth";
+import useAuth from "../../../Hooks/useAuth";
 import { useState } from "react";
 
 

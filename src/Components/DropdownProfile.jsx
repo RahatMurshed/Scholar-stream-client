@@ -1,5 +1,5 @@
 import React from 'react';
-import useAuth from '../Contexts/useAuth';
+import useAuth from '../Hooks/useAuth';
 
 const DropdownProfile = () => {
 
