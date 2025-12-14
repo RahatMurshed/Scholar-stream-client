@@ -3,7 +3,7 @@ import useAuth from '../Hooks/useAuth';
 
 const DropdownProfile = () => {
 
-    const {user} = useAuth();
+    const {user, photo} = useAuth();
 
     return (
        <div className="dropdown dropdown-end">
@@ -11,7 +11,7 @@ const DropdownProfile = () => {
         <div className="w-10 rounded-full border-3 border-emerald-500 shadow-sm shadow-emerald-400">
           <img
             alt="User photo"
-            src={user.photoURL} />
+            src={user.photoURL || photo} />
         </div>
       </div>
       <ul

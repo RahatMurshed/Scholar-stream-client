@@ -7,6 +7,7 @@ const AuthProvider = ({children}) => {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [photo, setPhoto] = useState(null);
 
 
     const googlePRovider = new GoogleAuthProvider();
@@ -61,6 +62,8 @@ const AuthProvider = ({children}) => {
         registerUser,
         updateUserProfile,
         logOut,
+        setPhoto,
+        photo
 
     };
 

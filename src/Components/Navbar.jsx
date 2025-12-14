@@ -49,7 +49,7 @@ const Navbar = () => {
   <div className="navbar-end ">
     
     {user ? <div className='space-x-3 flex items-center'>
-    <DropdownProfile></DropdownProfile>
+    <DropdownProfile></DropdownProfile> 
     <button onClick={handleLogout}><Button label='Logout' variant='primary'></Button></button>
     </div> : <>
     <Link to='/login'>

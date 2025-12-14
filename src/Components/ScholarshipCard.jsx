@@ -1,10 +1,14 @@
 import React from "react";
 import CardBtn from "./CardBtn";
+import { Link } from "react-router";
+
 
 
 const ScholarshipCard = ({scholarship}) => {
 
-  const {universityImage, scholarshipName, universityName, universityCountry, universityCity,  subjectCategory, scholarshipCategory,  applicationFees, scholarshipLevel, applicationDeadline} = scholarship;
+  
+
+  const {universityImage, scholarshipName, universityName, universityCountry, universityCity,  subjectCategory, scholarshipCategory,  applicationFees, scholarshipLevel, applicationDeadline, _id} = scholarship;
 
   return (
     <div className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition flex flex-col h-full">
@@ -52,8 +56,7 @@ const ScholarshipCard = ({scholarship}) => {
     </p>
 
     {/* Action Button */}
-    
-    <CardBtn></CardBtn>
+    <Link to={`/scholarship-details/${_id}`}><button className="w-full bg-gradient-to-r from-[#102347] to-[#23365c] text-white py-2 rounded-full font-semibold shadow hover:scale-105 transition">View Details</button></Link>
     
   </div>
 </div>

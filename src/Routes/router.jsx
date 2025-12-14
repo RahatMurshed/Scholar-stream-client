@@ -4,6 +4,8 @@ import Register from "../Pages/Auth/Register/Register";
 import Login from "../Pages/Auth/Login/Login";
 import AllScholarships from "../Pages/AllScholarships/AllScholarships";
 import Home from "../Pages/Home/Home";
+import ScholarshipDetails from "../Pages/ScholarshipDetails/ScholarshipDetails";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +27,13 @@ export const router = createBrowserRouter([
       {
         path: '/all-scholarships',
         Component: AllScholarships
-      }
+      },
+      {
+        path: '/scholarship-details/:id',
+        element: <PrivateRoute>
+          <ScholarshipDetails></ScholarshipDetails>
+        </PrivateRoute>
+      },
     ]
   },
 ]);
