@@ -1,15 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const ScholarshipDetails = () => {
   const axiosSecure = useAxiosSecure();
     const {id} = useParams();
+    const navigate = useNavigate();
+   
 
     const {data: scholarship={} } = useQuery({
-    queryKey: ['scholarshipDetails'],
+    queryKey: ['scholarshipDetails', id],
     queryFn: async ()=>{
       const res = await axiosSecure.get(`/scholarship/${id}`)
         console.log(res.data);
@@ -17,6 +19,8 @@ const ScholarshipDetails = () => {
     
     }
     })
+
+
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -170,13 +174,19 @@ const ScholarshipDetails = () => {
         <p className="mb-6">
           Submit your application before <strong>{scholarship.applicationDeadline}</strong>.
         </p>
+       <Link to={`/payment/${scholarship._id}`}>
         <motion.button
+        
           whileHover={{ scale: 1.05 }}
           className="bg-white text-[#102347] px-8 py-3 rounded-full font-semibold shadow-lg"
         >
-          Apply Now
+          Apply for Scholarship
         </motion.button>
+        </Link>
       </section>
+      {/* ToDO: Review Section will be there . Data will come from review collection. */}
+      <h1 className="text-center text-3xl">Reviews</h1>
+      <button onClick={()=>{navigate(-1)}} className="btn btn-sm mt-3">Go Back</button>
     </div>
   );
 };

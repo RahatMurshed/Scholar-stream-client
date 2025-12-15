@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import Button from "../../../Components/Button";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import { useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
@@ -12,6 +12,9 @@ const RegisterPage = () => {
   const { googleLogin, setUser, registerUser, updateUserProfile, setPhoto} = useAuth();
   const [isError, setIsError] = useState(null);
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
+  const location = useLocation();
+
 
   const {
     register,
@@ -56,6 +59,8 @@ const RegisterPage = () => {
             console.log("Error updating user profile:", error.message);
           })
 
+          navigate(location.state || '/')
+
 
       })
 
@@ -87,6 +92,8 @@ const RegisterPage = () => {
               console.log('User has been saved to db');}
             })
 
+             navigate(location.state || '/');
+
           })
           .catch(error => {
             console.log(error.message);
@@ -95,6 +102,7 @@ const RegisterPage = () => {
 
 
       }
+      console.log(location.state)
 
   return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
@@ -205,7 +213,7 @@ const RegisterPage = () => {
               />
               <span className="text-[#102347]">Continue with Google</span>
             </button>
-            <p className="text-center mt-2 text-sm">Already have an account? <Link to='/login' className="text-emerald-500 hover:underline ">Login here</Link></p>
+            <p className="text-center mt-2 text-sm">Already have an account? <Link to='/login' state={location.state}  className="text-emerald-500 hover:underline ">Login here</Link></p>
           </div>
 
         </div>

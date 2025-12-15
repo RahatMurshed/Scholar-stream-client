@@ -41,14 +41,7 @@ const Home = () => {
         >
           🎓
         </motion.div>
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.2, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute bottom-20 right-10 text-5xl opacity-40"
-        >
-          📚
-        </motion.div>
+        
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-2xl">
@@ -82,7 +75,7 @@ const Home = () => {
         <h2 className="text-3xl font-serif font-bold text-[#102347] mb-12 text-center">
           Top Scholarships
         </h2>
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-8">
           {topScholarships.map((scholarship, index) => (
             <motion.div
               key={scholarship.scholarshipName}

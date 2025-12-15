@@ -1,12 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../Components/Button";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 
 const Login = () => {
 
   const {googleLogin, setUser, login} = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -21,6 +23,7 @@ const Login = () => {
       const loggedUser = result.user;
       console.log(loggedUser);
       setUser(loggedUser);
+       navigate(location.state || '/')
     })
     .catch(error=>{
       console.log(error.message);
@@ -35,6 +38,7 @@ const Login = () => {
       const loggedUser = result.user;
       console.log(loggedUser);
       setUser(loggedUser);
+       navigate(location.state || '/');
     })
     .catch(error=>{
       console.log(error.message);
@@ -42,6 +46,8 @@ const Login = () => {
 
 
   }
+
+  console.log(location.state)
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
@@ -128,7 +134,7 @@ const Login = () => {
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-600">
               Don't have an account?{" "}
-              <Link to='/register' href="/register" className="text-emerald-500 hover:underline">
+              <Link to='/register' state={location.state}  className="text-emerald-500 hover:underline">
                 Register here
               </Link>
             </p>

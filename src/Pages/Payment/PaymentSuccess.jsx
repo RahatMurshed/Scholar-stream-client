@@ -17,7 +17,7 @@ const PaymentSuccess = () => {
                 console.log(res.data);
                 setPaymentInfo({
                     transectionId: res.data.transectionId,
-                    trackingId: res.data.trackingId
+                    
 
                 })
             })
