@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
-import { FaUser, FaBars } from "react-icons/fa";
+import { FaUser, FaBars, FaUserEdit } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import { IoDocuments } from "react-icons/io5";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -9,11 +9,17 @@ import logo from '../assets/darkLogo.png'
 import { FaToggleOn } from "react-icons/fa";
 
 import { BsToggleOff } from "react-icons/bs";
+import { HiDocumentAdd } from "react-icons/hi";
+import { SiGoogleanalytics } from "react-icons/si";
+import useRoles from "../Hooks/useRoles";
+
+
 
 
 
 const DashboardLayout = () => {
-  
+  const {role} = useRoles();
+  console.log(role)
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isOpen, setIsOpen] = useState(true); // sidebar open/close
 
@@ -45,7 +51,9 @@ const DashboardLayout = () => {
 
         {/* NavLinks */}
         <nav className="flex-1 px-2 py-6 space-y-4">
-          <NavLink
+          {
+            role === 'Student' && <>
+            <NavLink
             to="/dashboard/my-profile"
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
@@ -89,8 +97,12 @@ const DashboardLayout = () => {
             <FaStar className="w-6 h-6" />
             {!isCollapsed && "My Reviews"}
           </NavLink>
+            </>
+          }
 
-          <NavLink
+        {
+          role === 'Moderator' && <>
+            <NavLink
             to="/dashboard/moderator-profile"
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
@@ -135,6 +147,86 @@ const DashboardLayout = () => {
             <FaStar className="w-6 h-6" />
             {!isCollapsed && "All Reviews"}
           </NavLink>
+          </>
+        }
+
+           {
+            role === 'Admin' && <>
+             <NavLink
+            to="/dashboard/admin-profile"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
+                isActive
+                  ? "bg-white text-[#102347]"
+                  : "hover:bg-white/20 hover:text-indigo-200"
+              }`
+            }
+            
+          >
+            <FaUser className="w-6 h-6" />
+            {!isCollapsed && "My Profile"}
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/add-scholarship"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
+                isActive
+                  ? "bg-white text-[#102347]"
+                  : "hover:bg-white/20 hover:text-indigo-200"
+              }`
+            }
+            
+          >
+            <HiDocumentAdd  className="w-6 h-6"/>
+
+            {!isCollapsed && "Add Scholarship"}
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/manage-scholarships"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
+                isActive
+                  ? "bg-white text-[#102347]"
+                  : "hover:bg-white/20 hover:text-indigo-200"
+              }`
+            }
+           
+          >
+           <IoDocuments className="w-6 h-6" />
+            {!isCollapsed && "Manage Scholarships"}
+          </NavLink>
+          <NavLink
+            to="/dashboard/manage-user"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
+                isActive
+                  ? "bg-white text-[#102347]"
+                  : "hover:bg-white/20 hover:text-indigo-200"
+              }`
+            }
+           
+          >
+            <FaUserEdit className="w-6 h-6" />
+            {!isCollapsed && "Manage User"}
+          </NavLink>
+          <NavLink
+            to="/dashboard/analytics"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
+                isActive
+                  ? "bg-white text-[#102347]"
+                  : "hover:bg-white/20 hover:text-indigo-200"
+              }`
+            }
+           
+          >
+            <SiGoogleanalytics className="w-6 h-6" />
+            {!isCollapsed && "Analytics"}
+          </NavLink>
+            </>
+           }
         </nav>
       </aside>
 

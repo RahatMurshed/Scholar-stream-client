@@ -16,6 +16,11 @@ import MyReviews from "../Pages/Dashboard/StudentRle/MyReviews/MyReviews";
 import ModeratorProfile from "../Pages/Dashboard/ModeratorRole/ModeratorProfile/ModeratorProfile";
 import ManageApplications from "../Pages/Dashboard/ModeratorRole/ManageApplications/ManageApplications";
 import AllReviews from "../Pages/Dashboard/ModeratorRole/AllReviews/AllReviews";
+import AdminProfile from "../Pages/Dashboard/AdminRole/AdminProfile/AdminProfile";
+import AddScholarship from "../Pages/Dashboard/AdminRole/AddScholarship/AddScholarship";
+import Analytics from "../Pages/Dashboard/AdminRole/Analytics/Analytics";
+import ManageUsers from "../Pages/Dashboard/AdminRole/ManageUser/ManageUser";
+import ManageScholarships from "../Pages/Dashboard/AdminRole/ManageScholarship/ManageScholarship";
 
 
 export const router = createBrowserRouter([
@@ -94,6 +99,26 @@ export const router = createBrowserRouter([
       {
         path: 'all-reviews',
         Component: AllReviews,
+      },
+      {
+        path: 'admin-profile',
+        Component: AdminProfile,
+      },
+      {
+        path: 'add-scholarship',
+        Component: AddScholarship,
+      },
+      {
+        path: 'manage-scholarships',
+        Component: ManageScholarships,
+      },
+      {
+        path: 'manage-user',
+        Component: ManageUsers,
+      },
+      {
+        path: 'analytics',
+        Component: Analytics,
       },
     ]
   }
