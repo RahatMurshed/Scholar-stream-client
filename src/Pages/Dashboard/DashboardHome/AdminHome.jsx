@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import useAuth from "../../../../Hooks/useAuth";
+import useAuth from "../../../Hooks/useAuth";
+
 
 const AdminProfile = () => {
   const { user } = useAuth();

@@ -1,9 +1,13 @@
 import React from 'react';
 import useAuth from '../Hooks/useAuth';
+import { Link } from 'react-router';
+
 
 const DropdownProfile = () => {
 
     const {user, photo} = useAuth();
+   
+      
 
     return (
        <div className="dropdown dropdown-end">
@@ -18,9 +22,9 @@ const DropdownProfile = () => {
         tabIndex="-1"
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
         <li>
-          <a className="justify-between">
+          <Link to='/dashboard/dashboard-home' className="justify-between">
             Profile
-          </a>
+          </Link>
         </li>
        
       </ul>

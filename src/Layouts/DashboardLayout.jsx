@@ -18,7 +18,7 @@ import useRoles from "../Hooks/useRoles";
 
 
 const DashboardLayout = () => {
-  const {role} = useRoles();
+  const { role } = useRoles();
   console.log(role)
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isOpen, setIsOpen] = useState(true); // sidebar open/close
@@ -27,9 +27,8 @@ const DashboardLayout = () => {
     <div className="min-h-screen flex bg-gray-50">
       {/* Sidebar */}
       <aside
-        className={`${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed md:static top-0 left-0 h-full md:h-auto z-40 
+        className={`${isOpen ? "translate-x-0" : "-translate-x-full"
+          } fixed md:static top-0 left-0 h-full md:h-auto z-40 
         bg-gradient-to-b from-[#102347] to-[#23365c] text-white flex flex-col 
         transition-transform duration-300 ease-in-out 
         ${isCollapsed ? "w-15" : "w-60"}`}
@@ -45,188 +44,155 @@ const DashboardLayout = () => {
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="text-white hover:text-emerald-400"
           >
-            {isCollapsed ?  <BsToggleOff className="w-6 h-6" /> : <FaToggleOn className="w-6 h-6" />}
+            {isCollapsed ? <BsToggleOff className="w-6 h-6" /> : <FaToggleOn className="w-6 h-6" />}
           </button>
         </div>
 
         {/* NavLinks */}
         <nav className="flex-1 px-2 py-6 space-y-4">
-          {
-            role === 'Student' && <>
-            <NavLink
-            to="/dashboard/my-profile"
+          <NavLink
+            to="/dashboard/dashboard-home"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
+              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                ? "bg-white text-[#102347]"
+                : "hover:bg-white/20 hover:text-indigo-200"
               }`
             }
-            
+
           >
             <FaUser className="w-6 h-6" />
             {!isCollapsed && "My Profile"}
           </NavLink>
 
-          <NavLink
-            to="/dashboard/my-applications"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-            
-          >
-            <IoDocuments className="w-6 h-6" />
-            {!isCollapsed && "My Applications"}
-          </NavLink>
+          {
+            role === 'Student' && <>
 
-          <NavLink
-            to="/dashboard/my-reviews"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-           
-          >
-            <FaStar className="w-6 h-6" />
-            {!isCollapsed && "My Reviews"}
-          </NavLink>
+
+              <NavLink
+                to="/dashboard/my-applications"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
+
+              >
+                <IoDocuments className="w-6 h-6" />
+                {!isCollapsed && "My Applications"}
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/my-reviews"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
+
+              >
+                <FaStar className="w-6 h-6" />
+                {!isCollapsed && "My Reviews"}
+              </NavLink>
             </>
           }
 
-        {
-          role === 'Moderator' && <>
-            <NavLink
-            to="/dashboard/moderator-profile"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-            
-          >
-            <FaUser className="w-6 h-6" />
-            {!isCollapsed && "My Profile"}
-          </NavLink>
-          
-<NavLink
-            to="/dashboard/manage-applications"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-            
-          >
-            <IoDocuments className="w-6 h-6" />
-            {!isCollapsed && "Manage Applications"}
-          </NavLink>
-          
+          {
+            role === 'Moderator' && <>
 
-           <NavLink
-            to="/dashboard/all-reviews"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-           
-          >
-            <FaStar className="w-6 h-6" />
-            {!isCollapsed && "All Reviews"}
-          </NavLink>
-          </>
-        }
 
-           {
-            role === 'Admin' && <>
-             <NavLink
-            to="/dashboard/admin-profile"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-            
-          >
-            <FaUser className="w-6 h-6" />
-            {!isCollapsed && "My Profile"}
-          </NavLink>
+              <NavLink
+                to="/dashboard/manage-applications"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
 
-          <NavLink
-            to="/dashboard/add-scholarship"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-            
-          >
-            <HiDocumentAdd  className="w-6 h-6"/>
+              >
+                <IoDocuments className="w-6 h-6" />
+                {!isCollapsed && "Manage Applications"}
+              </NavLink>
 
-            {!isCollapsed && "Add Scholarship"}
-          </NavLink>
 
-          <NavLink
-            to="/dashboard/manage-scholarships"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-           
-          >
-           <IoDocuments className="w-6 h-6" />
-            {!isCollapsed && "Manage Scholarships"}
-          </NavLink>
-          <NavLink
-            to="/dashboard/manage-user"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-           
-          >
-            <FaUserEdit className="w-6 h-6" />
-            {!isCollapsed && "Manage User"}
-          </NavLink>
-          <NavLink
-            to="/dashboard/analytics"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${
-                isActive
-                  ? "bg-white text-[#102347]"
-                  : "hover:bg-white/20 hover:text-indigo-200"
-              }`
-            }
-           
-          >
-            <SiGoogleanalytics className="w-6 h-6" />
-            {!isCollapsed && "Analytics"}
-          </NavLink>
+              <NavLink
+                to="/dashboard/all-reviews"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
+
+              >
+                <FaStar className="w-6 h-6" />
+                {!isCollapsed && "All Reviews"}
+              </NavLink>
             </>
-           }
+          }
+
+          {
+            role === 'Admin' && <>
+            
+
+              <NavLink
+                to="/dashboard/add-scholarship"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
+
+              >
+                <HiDocumentAdd className="w-6 h-6" />
+
+                {!isCollapsed && "Add Scholarship"}
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/manage-scholarships"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
+
+              >
+                <IoDocuments className="w-6 h-6" />
+                {!isCollapsed && "Manage Scholarships"}
+              </NavLink>
+              <NavLink
+                to="/dashboard/manage-user"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
+
+              >
+                <FaUserEdit className="w-6 h-6" />
+                {!isCollapsed && "Manage User"}
+              </NavLink>
+              <NavLink
+                to="/dashboard/analytics"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg font-semibold transition ${isActive
+                    ? "bg-white text-[#102347]"
+                    : "hover:bg-white/20 hover:text-indigo-200"
+                  }`
+                }
+
+              >
+                <SiGoogleanalytics className="w-6 h-6" />
+                {!isCollapsed && "Analytics"}
+              </NavLink>
+            </>
+          }
         </nav>
       </aside>
 
@@ -234,12 +200,12 @@ const DashboardLayout = () => {
       <div className="flex-1 flex flex-col">
         {/* Topbar with Toggle Button */}
         <header className={`flex items-center justify-between lg:justify-center  bg-[#102347] text-white px-4 py-3 shadow`}>
-          <div className={`lg:hidden ${isOpen? "ml-15 md:ml-0" : "ml-0"}`}>
+          <div className={`lg:hidden ${isOpen ? "ml-15 md:ml-0" : "ml-0"}`}>
             <button onClick={() => setIsOpen(!isOpen)}>
-            {
-                isOpen? <FaChevronRight /> : <FaChevronLeft /> 
-            }
-          </button>
+              {
+                isOpen ? <FaChevronRight /> : <FaChevronLeft />
+              }
+            </button>
           </div>
           <div className=""><h1 className="">ScholarStream Dashboard</h1></div>
         </header>

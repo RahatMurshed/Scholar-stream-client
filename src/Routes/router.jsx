@@ -10,17 +10,18 @@ import Payment from "../Pages/Payment/Payment";
 import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Payment/PaymentCancel";
 import DashboardLayout from "../Layouts/DashboardLayout";
-import MyProfile from '../Pages/Dashboard/StudentRle/MyProfile/MyProfile'
+
 import MyApplications from "../Pages/Dashboard/StudentRle/MyApplications/MyApplications";
 import MyReviews from "../Pages/Dashboard/StudentRle/MyReviews/MyReviews";
-import ModeratorProfile from "../Pages/Dashboard/ModeratorRole/ModeratorProfile/ModeratorProfile";
+
 import ManageApplications from "../Pages/Dashboard/ModeratorRole/ManageApplications/ManageApplications";
 import AllReviews from "../Pages/Dashboard/ModeratorRole/AllReviews/AllReviews";
-import AdminProfile from "../Pages/Dashboard/AdminRole/AdminProfile/AdminProfile";
+
 import AddScholarship from "../Pages/Dashboard/AdminRole/AddScholarship/AddScholarship";
 import Analytics from "../Pages/Dashboard/AdminRole/Analytics/Analytics";
 import ManageUsers from "../Pages/Dashboard/AdminRole/ManageUser/ManageUser";
 import ManageScholarships from "../Pages/Dashboard/AdminRole/ManageScholarship/ManageScholarship";
+import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 
 
 export const router = createBrowserRouter([
@@ -57,28 +58,28 @@ export const router = createBrowserRouter([
         </PrivateRoute>
       },
       {
-        path:'payment-success',
+        path: 'payment-success',
         element: <PrivateRoute>
           <PaymentSuccess></PaymentSuccess>
         </PrivateRoute>,
       },
       {
-        path:'payment-cancelled',
+        path: 'payment-cancelled',
         element: <PrivateRoute>
-         <PaymentCancel></PaymentCancel>
+          <PaymentCancel></PaymentCancel>
         </PrivateRoute>,
       },
     ]
   },
   {
-    path:'/dashboard',
+    path: '/dashboard',
     element: <PrivateRoute>
       <DashboardLayout></DashboardLayout>
     </PrivateRoute>,
     children: [
       {
-        path: 'my-profile',
-        Component: MyProfile,
+        path: 'dashboard-home',
+        Component: DashboardHome
       },
       {
         path: 'my-applications',
@@ -88,10 +89,7 @@ export const router = createBrowserRouter([
         path: 'my-reviews',
         Component: MyReviews,
       },
-      {
-        path: 'moderator-profile',
-        Component: ModeratorProfile,
-      },
+
       {
         path: 'manage-applications',
         Component: ManageApplications,
@@ -100,10 +98,7 @@ export const router = createBrowserRouter([
         path: 'all-reviews',
         Component: AllReviews,
       },
-      {
-        path: 'admin-profile',
-        Component: AdminProfile,
-      },
+
       {
         path: 'add-scholarship',
         Component: AddScholarship,

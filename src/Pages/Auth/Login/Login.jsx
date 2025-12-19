@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../Components/Button";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -9,6 +9,7 @@ const Login = () => {
   const {googleLogin, setUser, login} = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState(null);
 
   const {
     register,
@@ -27,7 +28,9 @@ const Login = () => {
     })
     .catch(error=>{
       console.log(error.message);
+      setLoginError(error.message);
     })
+    
   };
 
 
@@ -96,7 +99,8 @@ const Login = () => {
                 {...register("password", { required: "Password is required" })}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none focus:border-none"
               />
-              {errors.password && <p className="text-red-500 text-sm m-1">{errors.password.message}</p>}
+              {errors.password && <p className="text-red-500 text-sm m-1 font-semibold">{errors.password.message}</p>}
+              {loginError && <p className="text-sm m-1 text-red-500 font-semibold">{loginError}</p>}
             </div>
              <p className="text-sm ">
               <Link className="text-emerald-500 hover:underline">
