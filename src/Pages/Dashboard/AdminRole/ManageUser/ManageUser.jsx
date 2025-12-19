@@ -1,4 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 
 const usersData = [
   {
@@ -22,17 +24,26 @@ const usersData = [
 ];
 
 const ManageUsers = () => {
-  const [users, setUsers] = useState(usersData);
+    const axiosSecure = useAxiosSecure();
+
+    const {data: users = []} = useQuery({
+        queryKey: ['users'],
+        queryFn: async ()=>{
+            const res = await axiosSecure.get('/users')
+            return res.data;
+        }
+    })
+
+
+ 
   const [filterRole, setFilterRole] = useState("All");
 
   const handleDelete = (id) => {
-    setUsers((prev) => prev.filter((u) => u.id !== id));
+    
   };
 
   const handleRoleChange = (id, newRole) => {
-    setUsers((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, role: newRole } : u))
-    );
+    console.log(newRole)
   };
 
   const filteredUsers =
@@ -75,7 +86,7 @@ const ManageUsers = () => {
           <tbody>
             {filteredUsers.map((user) => (
               <tr key={user.id} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-3">{user.name}</td>
+                <td className="px-4 py-3">{user.displayName}</td>
                 <td className="px-4 py-3">{user.email}</td>
                 <td className="px-4 py-3">{user.role}</td>
                 <td className="px-4 py-3 space-x-2">

@@ -5,6 +5,7 @@ import { FaEdit } from "react-icons/fa";
 
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
 
 
 
@@ -14,7 +15,7 @@ const ManageScholarships = () => {
 
 
 
-    const { data: scholarship = [], refetch } = useQuery({
+    const { data: scholarships = [], refetch } = useQuery({
         queryKey: ['scholarships'],
         queryFn: async () => {
             const res = await axiosSecure.get('/scholarships')
@@ -23,9 +24,15 @@ const ManageScholarships = () => {
     })
 
 
-    const [scholarships, setScholarships] = useState(scholarship);
-    const [selectedScholarship, setSelectedScholarship] = useState(null);
-    const [showEdit, setShowEdit] = useState(false);
+    // const [selectedScholarship, setSelectedScholarship] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedScholarship, setSelectedScholarship] = useState({});
+    console.log(selectedScholarship)
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm()
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -45,9 +52,9 @@ const ManageScholarships = () => {
                         console.log(res.data);
                         if (res.data.deletedCount) {
                             Swal.fire({
-                              title: "Deleted!",
-                              text: "Your scholarship has been deleted.",
-                              icon: "success"
+                                title: "Deleted!",
+                                text: "Your scholarship has been deleted.",
+                                icon: "success"
                             });
                             refetch();
                         }
@@ -58,18 +65,26 @@ const ManageScholarships = () => {
 
     };
 
-    const openEdit = (scholarship) => {
-        setSelectedScholarship(scholarship);
-        setShowEdit(true);
-    };
 
-    const handleEdit = () => {
-        setScholarships((prev) =>
-            prev.map((s) =>
-                s.id === selectedScholarship.id ? selectedScholarship : s
-            )
-        );
-        setShowEdit(false);
+
+    const handleEdit = (data) => {
+        console.log(data);
+        axiosSecure.patch(`/scholarship/${selectedScholarship._id}`, data)
+            .then(res => {
+                console.log(res.data);
+                if (res.data.modifiedCount) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Scholarship has been updated",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    refetch();
+                    setShowModal(false);
+                }
+            })
+
     };
 
     return (
@@ -95,8 +110,8 @@ const ManageScholarships = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {scholarship.map((s) => (
-                            <tr key={s.id} className="border-b hover:bg-gray-50">
+                        {scholarships.map((s) => (
+                            <tr key={s._id} className="border-b hover:bg-gray-50">
                                 <td className="px-4 py-3">{s.scholarshipName}</td>
                                 <td className="px-4 py-3">{s.universityName}</td>
 
@@ -107,7 +122,11 @@ const ManageScholarships = () => {
                                 <td className="px-4 py-3">{s.applicationDeadline}</td>
                                 <td className="px-4 py-3 space-x-1 flex">
                                     <button
-                                        onClick={() => openEdit(s)}
+                                        onClick={() => {
+                                            setSelectedScholarship(s);
+
+                                            setShowModal(true);
+                                        }}
                                         className="bg-yellow-500 text-white btn btn-sm px-1 text-[10px] rounded hover:bg-yellow-600"
                                     >
                                         <FaEdit className="w-4 h-4" />
@@ -137,63 +156,144 @@ const ManageScholarships = () => {
             </div>
 
             {/* Edit Modal */}
-            {showEdit && selectedScholarship && (
+            {showModal && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg">
-                        <h2 className="text-xl font-bold text-[#102347] mb-4">
-                            Edit Scholarship
-                        </h2>
-                        <div className="space-y-4">
+                    <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-2xl overflow-y-auto max-h-[90vh]">
+                        <h2 className="text-xl font-bold text-[#102347] mb-4">Edit Scholarship</h2>
+
+                        <form onSubmit={handleSubmit(handleEdit)} className="space-y-4">
+                            {/* Scholarship Name */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Scholarship Name
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700">Scholarship Name</label>
                                 <input
                                     type="text"
                                     value={selectedScholarship.scholarshipName}
-                                    onChange={(e) =>
-                                        setSelectedScholarship({
-                                            ...selectedScholarship,
-                                            scholarshipName: e.target.value,
-                                        })
-                                    }
+                                    {...register("scholarshipName", { required: true })}
                                     className="mt-1 block w-full border rounded px-3 py-2"
                                 />
+                                {errors.scholarshipName && <p className="text-red-500 text-sm">Required</p>}
                             </div>
+
+                            {/* University Name */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">
-                                    University Name
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700">University Name</label>
                                 <input
                                     type="text"
-                                    value={selectedScholarship.universityName}
-                                    onChange={(e) =>
-                                        setSelectedScholarship({
-                                            ...selectedScholarship,
-                                            universityName: e.target.value,
-                                        })
-                                    }
+                                    defaultValue={selectedScholarship.universityName}
+                                    {...register("universityName", { required: true })}
                                     className="mt-1 block w-full border rounded px-3 py-2"
                                 />
                             </div>
-                            {/* Add more editable fields as needed */}
+
+                            {/* Subject Category */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Subject Category</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedScholarship.subjectCategory}
+                                    {...register("subjectCategory")}
+                                    className="mt-1 block w-full border rounded px-3 py-2"
+                                />
+                            </div>
+
+                            {/* Scholarship Category */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Scholarship Category</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedScholarship.scholarshipCategory}
+                                    {...register("scholarshipCategory")}
+                                    className="mt-1 block w-full border rounded px-3 py-2"
+                                />
+                            </div>
+
+                            {/* Degree */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Degree</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedScholarship.scholarshipLevel}
+                                    {...register("scholarshipLevel")}
+                                    className="mt-1 block w-full border rounded px-3 py-2"
+                                />
+                            </div>
+
+                            {/* Tuition Fees, Application Fees, Service Charge */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Tuition Fees</label>
+                                    <input
+                                        type="number"
+                                        defaultValue={selectedScholarship.tuitionFees}
+                                        {...register("tuitionFees")}
+                                        className="mt-1 block w-full border rounded px-3 py-2"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Application Fees</label>
+                                    <input
+                                        type="number"
+                                        defaultValue={selectedScholarship.applicationFees}
+                                        {...register("applicationFees")}
+                                        className="mt-1 block w-full border rounded px-3 py-2"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Service Charge</label>
+                                    <input
+                                        type="number"
+                                        defaultValue={selectedScholarship.serviceCharge}
+                                        {...register("serviceCharge")}
+                                        className="mt-1 block w-full border rounded px-3 py-2"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Deadline */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Application Deadline</label>
+                                <input
+                                    type="date"
+                                    defaultValue={selectedScholarship.applicationDeadline}
+                                    {...register("applicationDeadline")}
+                                    className="mt-1 block w-full border rounded px-3 py-2"
+                                />
+                            </div>
+
+                            {/* Scholarship Status */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Scholarship Status</label>
+                                <select
+                                    {...register("scholarshipStatus")}
+                                    className="mt-1 block w-full border rounded px-3 py-2"
+                                >
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+
+                            {/* Save / Cancel */}
                             <div className="text-right mt-4 space-x-2">
                                 <button
-                                    onClick={() => { handleEdit(s._id) }}
+                                    type="submit"
                                     className="bg-[#102347] text-white px-4 py-2 rounded hover:bg-[#23365c]"
                                 >
                                     Save Changes
                                 </button>
                                 <button
-                                    onClick={() => setShowEdit(false)}
+                                    type="button"
+                                    onClick={() => setShowModal(false)}
                                     className="bg-gray-300 text-[#102347] px-4 py-2 rounded hover:bg-gray-400"
                                 >
                                     Cancel
                                 </button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
+
+
+
             )}
         </div>
     );
