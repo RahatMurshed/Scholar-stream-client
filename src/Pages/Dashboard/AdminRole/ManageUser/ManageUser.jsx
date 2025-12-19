@@ -3,26 +3,7 @@ import React, { useState } from "react";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
-const usersData = [
-    {
-        id: 1,
-        name: "Rahat",
-        email: "rahat@student.com",
-        role: "Student",
-    },
-    {
-        id: 2,
-        name: "Sara",
-        email: "sara@moderator.com",
-        role: "Moderator",
-    },
-    {
-        id: 3,
-        name: "Admin User",
-        email: "admin@scholarstream.com",
-        role: "Admin",
-    },
-];
+
 
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -69,8 +50,41 @@ const ManageUsers = () => {
 
     };
 
-    const handleRoleChange = (id, newRole) => {
+    const handleRoleChange = (user, newRole) => {
         console.log(newRole)
+        console.log(user)
+        const updatedData = {
+            role: newRole
+        }
+        Swal.fire({
+            title: `You want to make ${user.displayName} as ${newRole}?`,
+            text: `
+            Changing a user's role as ${newRole} will affect their access rights. Please confirm before proceeding.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes. Change"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+
+                axiosSecure.patch(`/user/${user._id}`, updatedData)
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.modifiedCount) {
+                            Swal.fire({
+                                title: "Changed!",
+                                text: `${user.displayName}'s role has been changed as ${newRole}`,
+                                icon: "success"
+                            });
+                            refetch();
+                        }
+                    })
+
+
+            }
+        });
     };
 
     const filteredUsers =
@@ -120,7 +134,7 @@ const ManageUsers = () => {
                                     {/* Change Role Dropdown */}
                                     <select
                                         value={user.role}
-                                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                                        onChange={(e) => handleRoleChange(user, e.target.value)}
                                         className="border rounded px-2 py-1"
                                     >
                                         <option value="Student">Student</option>
