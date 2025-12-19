@@ -13,6 +13,8 @@ const Payment = () => {
     const {user} = useAuth();
     const axiosSecure = useAxiosSecure();
 
+    
+
     const {data:scholarship={} , isLoading} = useQuery({
         queryKey: ['scholarship', id],
         queryFn: async ()=>{
@@ -22,10 +24,10 @@ const Payment = () => {
         }
     })
 
-     const totalAmount =
-    parseInt(scholarship.applicationFees.replace("$", "")) +
-    parseInt(scholarship.serviceCharge.replace("$", ""));
     
+     const totalAmount =
+    parseInt(scholarship.applicationFees) +
+    parseInt(scholarship.serviceCharge);
 
     const  handlePayment = async ()=>{
         const paymentInfo = {
@@ -35,14 +37,52 @@ const Payment = () => {
             scholarshipName: scholarship.scholarshipName
 
         }
-        console.log(paymentInfo)
-        console.log(totalAmount)
+        
+        const applicationInfo = {
+
+            scholarshipId: scholarship._id,
+
+            scholarshipName: scholarship.scholarshipName,
+
+            universityName: scholarship.universityName,
+
+            userId: user._id,
+            userName: user.displayName,
+            userEmail: user.email,
+
+
+            scholarshipCategory : scholarship.scholarshipCategory ,
+
+            scholarshipLevel: scholarship.scholarshipLevel,
+
+            
+            applicationFees: scholarship.applicationFees,
+
+            serviceCharge: scholarship.serviceCharge,
+
+            applicationStatus : 'Pending',
+
+            paymentStatus : 'Unpaid',
+            feedback :'No feedback available',
+
+            applicationDate: new Date(),
+            
+            transectionId: 'Not available'
+
+        }
+
+        
 
         const res = await axiosSecure.post('/checkout', paymentInfo);
         console.log(res.data);
         window.location.href = res.data.url;
+
+        axiosSecure.post('/application', applicationInfo)
+        
         
     }
+
+    
 
     if(isLoading){
         return <Loader></Loader>
@@ -82,11 +122,11 @@ const Payment = () => {
           <div className="space-y-4 text-gray-700">
             <div className="flex justify-between">
               <span className="font-semibold">Application Fees:</span>
-              <span>{scholarship.applicationFees}</span>
+              <span>${scholarship.applicationFees}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-semibold">Service Charge:</span>
-              <span>{scholarship.serviceCharge}</span>
+              <span>${scholarship.serviceCharge}</span>
             </div>
             <div className="border-t pt-4 flex justify-between text-lg font-bold text-[#102347]">
               <span>Total Amount:</span>

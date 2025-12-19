@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import Loader from "../../Components/Loader";
 
 const ScholarshipDetails = () => {
   const axiosSecure = useAxiosSecure();
@@ -10,7 +11,7 @@ const ScholarshipDetails = () => {
     const navigate = useNavigate();
    
 
-    const {data: scholarship={} } = useQuery({
+    const {data: scholarship={}, isLoading } = useQuery({
     queryKey: ['scholarshipDetails', id],
     queryFn: async ()=>{
       const res = await axiosSecure.get(`/scholarship/${id}`)
@@ -20,6 +21,9 @@ const ScholarshipDetails = () => {
     }
     })
 
+    if(isLoading){
+        return <Loader></Loader>
+    }
 
 
   return (
@@ -48,7 +52,17 @@ const ScholarshipDetails = () => {
           <p className="mt-2 text-sm text-gray-200 font-bold">
             World Rank #{scholarship.universityWorldRank}
           </p>
+            <Link to={`/payment/${scholarship._id}`}>
+        <motion.button
+        
+          whileHover={{ scale: 1.05 }}
+          className="text-white bg-[#102347] px-5 py-2 rounded-full text-sm font-semibold shadow-lg mt-3"
+        >
+          Apply for Scholarship
+        </motion.button>
+        </Link>
         </motion.div>
+        
       </section>
 
       {/* Main Content */}
@@ -111,7 +125,7 @@ const ScholarshipDetails = () => {
           </motion.div>
         </div>
 
-        {/* Right Column: Quick Facts */}
+        {/* Quick Facts */}
         <div className="space-y-8">
           <motion.div
             initial={{ opacity: 0, x: 40 }}
@@ -123,9 +137,9 @@ const ScholarshipDetails = () => {
               Quick Facts
             </h3>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li><strong>Tuition Fees:</strong> {scholarship.tuitionFees}</li>
-              <li><strong>Application Fees:</strong> {scholarship.applicationFees}</li>
-              <li><strong>Service Charge:</strong> {scholarship.serviceCharge}</li>
+              <li><strong>Tuition Fees:</strong> ${scholarship.tuitionFees}</li>
+              <li><strong>Application Fees:</strong> ${scholarship.applicationFees}</li>
+              <li><strong>Service Charge:</strong> ${scholarship.serviceCharge}</li>
               <li><strong>Deadline:</strong> {scholarship.applicationDeadline}</li>
               <li><strong>Notification Date:</strong> {scholarship.notificationDate}</li>
               <li><strong>Status:</strong> {scholarship.scholarshipStatus}</li>

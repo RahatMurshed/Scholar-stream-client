@@ -47,7 +47,7 @@ const ScholarshipCard = ({scholarship}) => {
 
     {/* Fees */}
     <div className="text-sm text-gray-600 ">
-      <p>Application Fees: {applicationFees}</p>
+      <p>Application Fees: ${applicationFees}</p>
     </div>
 
     {/* Deadline */}

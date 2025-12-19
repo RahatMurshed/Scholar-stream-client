@@ -4,12 +4,14 @@ import ScholarshipCard from "../../Components/ScholarshipCard";
 import { useQuery } from "@tanstack/react-query";
 import bannerImg from '../../assets/Ultra realistic land.png'
 import useAxios from "../../Hooks/useAxios";
+import Loader from "../../Components/Loader";
+import { Link } from "react-router";
 
 const Home = () => {
 
     const axios = useAxios();
 
-  const { data: topScholarships = [] } = useQuery({
+  const { data: topScholarships = [] , isLoading} = useQuery({
     queryKey: ["topScholarships", 'top-scholarships'],
     queryFn: async () => {
         const res = await axios.get('/top-scholarships');
@@ -17,6 +19,11 @@ const Home = () => {
         return res.data;
     },
   });
+
+
+  if(isLoading){
+        return <Loader></Loader>
+    }
 
   return (
     <div className="bg-gray-50">
@@ -61,12 +68,14 @@ const Home = () => {
           >
             Explore thousands of opportunities tailored to your academic journey.
           </motion.p>
+          <Link to='/all-scholarships'>
           <motion.button
             whileHover={{ scale: 1.1, boxShadow: "0px 0px 15px rgba(255,255,255,0.6)" }}
             className="bg-white text-[#102347] px-8 py-3 rounded-full font-semibold shadow-lg"
           >
             Search Scholarship
           </motion.button>
+          </Link>
         </div>
       </section>
 

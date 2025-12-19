@@ -7,6 +7,16 @@ import Home from "../Pages/Home/Home";
 import ScholarshipDetails from "../Pages/ScholarshipDetails/ScholarshipDetails";
 import PrivateRoute from "./PrivateRoute";
 import Payment from "../Pages/Payment/Payment";
+import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
+import PaymentCancel from "../Pages/Payment/PaymentCancel";
+import DashboardLayout from "../Layouts/DashboardLayout";
+import MyProfile from '../Pages/Dashboard/StudentRle/MyProfile/MyProfile'
+import MyApplications from "../Pages/Dashboard/StudentRle/MyApplications/MyApplications";
+import MyReviews from "../Pages/Dashboard/StudentRle/MyReviews/MyReviews";
+import ModeratorProfile from "../Pages/Dashboard/ModeratorRole/ModeratorProfile/ModeratorProfile";
+import ManageApplications from "../Pages/Dashboard/ModeratorRole/ManageApplications/ManageApplications";
+import AllReviews from "../Pages/Dashboard/ModeratorRole/AllReviews/AllReviews";
+
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +51,50 @@ export const router = createBrowserRouter([
           <Payment></Payment>
         </PrivateRoute>
       },
+      {
+        path:'payment-success',
+        element: <PrivateRoute>
+          <PaymentSuccess></PaymentSuccess>
+        </PrivateRoute>,
+      },
+      {
+        path:'payment-cancelled',
+        element: <PrivateRoute>
+         <PaymentCancel></PaymentCancel>
+        </PrivateRoute>,
+      },
     ]
   },
+  {
+    path:'/dashboard',
+    element: <PrivateRoute>
+      <DashboardLayout></DashboardLayout>
+    </PrivateRoute>,
+    children: [
+      {
+        path: 'my-profile',
+        Component: MyProfile,
+      },
+      {
+        path: 'my-applications',
+        Component: MyApplications,
+      },
+      {
+        path: 'my-reviews',
+        Component: MyReviews,
+      },
+      {
+        path: 'moderator-profile',
+        Component: ModeratorProfile,
+      },
+      {
+        path: 'manage-applications',
+        Component: ManageApplications,
+      },
+      {
+        path: 'all-reviews',
+        Component: AllReviews,
+      },
+    ]
+  }
 ]);

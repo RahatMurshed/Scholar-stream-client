@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ScholarshipCard from "../../Components/ScholarshipCard";
 import useAxios from "../../Hooks/useAxios"
 import { useQuery } from "@tanstack/react-query";
+import Loader from "../../Components/Loader";
 
 // Todo: implement filtering logic and pagination
 
@@ -10,7 +11,7 @@ const AllScholarshipsPage = () => {
   const axios = useAxios();
  const [filters, setFilters] = useState({});
 
-  const {data: scholarships = []} = useQuery({
+  const {data: scholarships = [], isLoading} = useQuery({
     queryKey: ['scholarships', filters],
     queryFn: async () => {
       const res = await axios.get('/scholarships');
@@ -31,7 +32,9 @@ const AllScholarshipsPage = () => {
     console.log("Filters applied:", filterData);
     }
   
-  
+  if(isLoading){
+        return <Loader></Loader>
+    }
 
 
   return (
