@@ -55,6 +55,7 @@ const Payment = () => {
 
             scholarshipLevel: scholarship.scholarshipLevel,
 
+            subjectCategory: scholarship.subjectCategory,
             
             applicationFees: scholarship.applicationFees,
 

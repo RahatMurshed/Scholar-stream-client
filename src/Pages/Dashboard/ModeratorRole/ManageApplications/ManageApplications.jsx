@@ -1,28 +1,34 @@
 import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { VscFeedback } from "react-icons/vsc";
+import { CgDetailsMore } from "react-icons/cg";
+import { MdOutlineCancel } from "react-icons/md";
+import Swal from "sweetalert2";
 
-const applicationsData = [
-  {
-    id: 1,
-    applicantName: "Rahat",
-    applicantEmail: "rahat@student.com",
-    universityName: "Oxford University",
-    feedback: "Awaiting review",
-    status: "pending",
-    paymentStatus: "unpaid",
-    subjectCategory: "Computer Science",
-    fees: 100,
-  },
-];
 
 const ManageApplications = () => {
-  const [apps, setApps] = useState(applicationsData);
+
+  const axiosSecure = useAxiosSecure();
+
+  const { data: applicationsData = [], refetch } = useQuery({
+    queryKey: ['applicationData'],
+    queryFn: async () => {
+      const res = await axiosSecure.get('/applications')
+      console.log(res.data)
+      return res.data;
+    }
+  })
+
+
+
   const [selectedApp, setSelectedApp] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackText, setFeedbackText] = useState("");
-
-  const openDetails = (app) => {
-    setSelectedApp(app);
+  console.log(feedbackText)
+  const openDetails = (applicationsData) => {
+    setSelectedApp(applicationsData);
     setShowDetails(true);
   };
 
@@ -32,29 +38,56 @@ const ManageApplications = () => {
   };
 
   const handleFeedbackSubmit = () => {
-    setApps((prev) =>
-      prev.map((a) =>
-        a.id === selectedApp.id ? { ...a, feedback: feedbackText } : a
-      )
-    );
+    const updatedData = {
+      feedback: feedbackText
+    }
+    axiosSecure.patch(`/application/${selectedApp._id}/feedback`, updatedData)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.modifiedCount) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your review has been saved",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          refetch();
+        }
+      })
+
     setShowFeedback(false);
-    setFeedbackText("");
+
   };
 
   const updateStatus = (id, newStatus) => {
-    setApps((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: newStatus } : a))
-    );
+
+    const updatedData = {
+      applicationStatus:newStatus
+    }
+ axiosSecure.patch(`/application/${id}/status`, updatedData)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.modifiedCount) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your status has been saved",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          refetch();
+        }
+      })
+
   };
 
   const cancelApplication = (id) => {
-    setApps((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: "rejected" } : a))
-    );
+
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-8xl mx-auto">
       <h1 className="text-3xl font-serif font-bold text-[#102347] mb-8">
         Manage Applied Applications
       </h1>
@@ -73,42 +106,45 @@ const ManageApplications = () => {
             </tr>
           </thead>
           <tbody>
-            {apps.map((app) => (
-              <tr key={app.id} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-3">{app.applicantName}</td>
-                <td className="px-4 py-3">{app.applicantEmail}</td>
+            {applicationsData.map((app) => (
+              <tr key={app._id} className="border-b hover:bg-gray-50">
+                <td className="px-4 py-3">{app.userName}</td>
+                <td className="px-4 py-3">{app.userEmail}</td>
                 <td className="px-4 py-3">{app.universityName}</td>
                 <td className="px-4 py-3">{app.feedback}</td>
-                <td className="px-4 py-3 capitalize">{app.status}</td>
+                <td className="px-4 py-3 capitalize">{app.applicationStatus}</td>
                 <td className="px-4 py-3">{app.paymentStatus}</td>
-                <td className="px-4 py-3 space-x-2">
+                <td className="px-4 py-3 space-x-1">
                   <button
                     onClick={() => openDetails(app)}
-                    className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                    className="bg-blue-600 text-white p-1 rounded hover:bg-blue-700"
                   >
-                    Details
+                    <CgDetailsMore className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => openFeedback(app)}
-                    className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700"
+                    className="bg-purple-600 text-white p-1 rounded hover:bg-purple-700"
                   >
-                    Feedback
+                    <VscFeedback className="w-4 h-4 " />
                   </button>
                   <select
-                    onChange={(e) => updateStatus(app.id, e.target.value)}
+                    onChange={(e) => updateStatus(app._id, e.target.value)}
                     value={app.status}
-                    className="border rounded px-2 py-1"
+                    className="border rounded py-1"
                   >
                     <option value="pending">Pending</option>
                     <option value="processing">Processing</option>
                     <option value="completed">Completed</option>
                   </select>
-                  <button
+                  {
+                    app.applicationStatus === 'completed'|| <button
                     onClick={() => cancelApplication(app.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                    className="bg-red-600 text-white p-1 rounded hover:bg-red-700"
                   >
-                    Cancel
+                    <MdOutlineCancel className="w-4 h-4" />
+
                   </button>
+                  }
                 </td>
               </tr>
             ))}
@@ -123,12 +159,13 @@ const ManageApplications = () => {
             <h2 className="text-xl font-bold text-[#102347] mb-4">
               Application Details
             </h2>
-            <p><strong>Applicant:</strong> {selectedApp.applicantName}</p>
-            <p><strong>Email:</strong> {selectedApp.applicantEmail}</p>
+            <p><strong>Applicant:</strong> {selectedApp.userName}</p>
+            <p><strong>Email:</strong> {selectedApp.userEmail}</p>
             <p><strong>University:</strong> {selectedApp.universityName}</p>
             <p><strong>Subject:</strong> {selectedApp.subjectCategory}</p>
-            <p><strong>Fees:</strong> ${selectedApp.fees}</p>
-            <p><strong>Status:</strong> {selectedApp.status}</p>
+            <p><strong>Scholarship:</strong> {selectedApp.scholarshipCategory}</p>
+            <p><strong>Fees:</strong> ${parseInt(selectedApp.applicationFees) + parseInt(selectedApp.serviceCharge)}</p>
+            <p><strong>Status:</strong> {selectedApp.applicationStatus}</p>
             <p><strong>Payment:</strong> {selectedApp.paymentStatus}</p>
             <div className="mt-6 text-right">
               <button

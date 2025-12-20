@@ -49,7 +49,7 @@ const PaymentSuccess = () => {
 
         {/* Dashboard Button */}
         <Link
-          to="/dashboard"
+          to="/dashboard/dashboard-home"
           className="inline-block bg-gradient-to-r from-[#102347] to-[#23365c] text-white px-8 py-3 rounded-full font-semibold shadow hover:scale-105 transition"
         >
           Go to Dashboard
