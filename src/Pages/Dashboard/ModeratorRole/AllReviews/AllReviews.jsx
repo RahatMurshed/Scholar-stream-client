@@ -1,25 +1,20 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 
-const reviewsData = [
-  {
-    id: 1,
-    scholarshipName: "Global Excellence Scholarship",
-    universityName: "Oxford University",
-    comment: "Amazing opportunity!",
-    date: "2025-12-01",
-    rating: 5,
-  },
-  {
-    id: 2,
-    scholarshipName: "Harvard Merit Scholarship",
-    universityName: "Harvard University",
-    comment: "Competitive but rewarding experience.",
-    date: "2025-11-20",
-    rating: 4,
-  },
-];
 
 const AllReviews = () => {
+  const axiosSecure = useAxiosSecure();
+
+  const {data:reviewsData = [], refetch} = useQuery({
+    queryKey: ['all-reviews'],
+    queryFn: async () => {
+      const res = await axiosSecure.get('/reviews') 
+      console.log(res.data)
+      return res.data
+    }
+  })
+
   const [reviews, setReviews] = useState(reviewsData);
 
   const handleDelete = (id) => {
@@ -46,13 +41,13 @@ const AllReviews = () => {
             </tr>
           </thead>
           <tbody>
-            {reviews.map((review) => (
+            {reviewsData.map((review) => (
               <tr key={review.id} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-3">{review.scholarshipName}</td>
                 <td className="px-4 py-3">{review.universityName}</td>
-                <td className="px-4 py-3">{review.comment}</td>
-                <td className="px-4 py-3">{review.date}</td>
-                <td className="px-4 py-3">{review.rating} ⭐</td>
+                <td className="px-4 py-3">{review.reviewComment}</td>
+                <td className="px-4 py-3">{review.reviewDate}</td>
+                <td className="px-4 py-3">{review.ratingPoint} ⭐</td>
                 <td className="px-4 py-3">
                   <button
                     onClick={() => handleDelete(review.id)}
@@ -63,7 +58,7 @@ const AllReviews = () => {
                 </td>
               </tr>
             ))}
-            {reviews.length === 0 && (
+            {reviewsData.length === 0 && (
               <tr>
                 <td
                   colSpan="6"

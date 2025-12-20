@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 
 
 const MyApplications = () => {
+  
 
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
@@ -28,9 +29,10 @@ const MyApplications = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false)
   const [showReview, setShowReview] = useState(false);
-  const [review, setReview] = useState({ rating: 0, comment: "" });
+  
 
   const handlePayment = async (app) => {
+
     const totalAmount = parseInt(app.applicationFees) + parseInt(app.serviceCharge);
     console.log(totalAmount)
 
@@ -57,8 +59,31 @@ const MyApplications = () => {
     setShowReview(true);
   };
 
-  const handleReview = () => {
-    console.log("Review submitted:", review);
+  const handleReview = (e) => {
+    e.preventDefault();
+  
+    const newReview = {
+      scholarshipId: selectedApp.scholarshipId,
+      scholarshipName:selectedApp.scholarshipName,
+      universityName: selectedApp.universityName,
+      userName: selectedApp.userName,
+      userEmail: selectedApp.userEmail,
+      userImage: user.photoURL,
+      ratingPoint: e.target.rating.value,
+      reviewComment: e.target.comment.value,
+      reviewDate: new Date().toLocaleDateString()
+    }
+    axiosSecure.post('/reviews', newReview)
+    .then(res=>{
+      console.log(res.data);
+      if(res.data.insertedId){
+        Swal.fire({
+            title: "Saved!",
+            text: "Your review has been Saved.",
+            icon: "success"
+          });
+      }
+    })
     setShowReview(false);
 
   };
@@ -203,7 +228,7 @@ const MyApplications = () => {
                   {app.applicationStatus === "Completed" && (
                     <button
                       onClick={() => openReview(app)}
-                      className="bg-purple-600 text-white p-1 rounded hover:bg-purple-700"
+                      className="bg-yellow-600 text-white p-1 rounded hover:bg-yellow-700"
                     >
                       <MdOutlineReviews className="h-4 w-5" />
                     </button>
@@ -336,7 +361,9 @@ const MyApplications = () => {
             <h2 className="text-xl font-bold text-[#102347] mb-4">
               Add Review for {selectedApp.universityName}
             </h2>
-            <div className="space-y-4">
+            <form
+            onSubmit={handleReview}
+            className="space-y-4">
               {/* Rating */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -344,12 +371,10 @@ const MyApplications = () => {
                 </label>
                 <input
                   type="number"
+                  name="rating"
                   min="1"
                   max="5"
-                  value={review.rating}
-                  onChange={(e) =>
-                    setReview({ ...review, rating: e.target.value })
-                  }
+                  
                   className="mt-1 block w-full border rounded px-3 py-2"
                 />
               </div>
@@ -359,10 +384,8 @@ const MyApplications = () => {
                   Comment
                 </label>
                 <textarea
-                  value={review.comment}
-                  onChange={(e) =>
-                    setReview({ ...review, comment: e.target.value })
-                  }
+                 
+                  name="comment"
                   className="mt-1 block w-full border rounded px-3 py-2"
                   rows="4"
                 />
@@ -370,7 +393,7 @@ const MyApplications = () => {
               {/* Submit */}
               <div className="flex items-center space-x-3 ">
                 <button
-                  onClick={handleReview}
+                  type="submit"
                   className="bg-[#102347] text-white px-4 py-2 rounded hover:bg-[#23365c]"
                 >
                   Submit Review
@@ -379,7 +402,7 @@ const MyApplications = () => {
                   onClick={() => { setShowReview(false) }}
                   className="btn btn-outline">Cancel</button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}
