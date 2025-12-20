@@ -1,9 +1,40 @@
 import { Link } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 
 const AdminProfile = () => {
   const { user } = useAuth();
+  console.log(user)
+  const axiosSecure = useAxiosSecure();
+
+  const { data: scholarships = [] } = useQuery({
+    queryKey: ['scholarships'],
+    queryFn: async () => {
+      const res = axiosSecure.get('/scholarships')
+      return (await res).data;
+    }
+  })
+
+  const { data: users = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = axiosSecure.get('/users')
+      return (await res).data;
+    }
+  })
+
+    const { data: feesCollected = [] } = useQuery({
+    queryKey: ['application-fees', scholarships],
+    queryFn: async () => {
+      const res = axiosSecure.get('/total-application-fees')
+      return (await res).data;
+    }
+  })
+
+  const totalFees = feesCollected.map(app=> app.applicationFees + app.serviceCharge)
+  console.log(totalFees)
 
   return (
     <div className="max-w-6xl mx-auto space-y-10">
@@ -42,7 +73,7 @@ const AdminProfile = () => {
             <div>
               <p className="text-sm text-gray-500">Joined</p>
               <p className="font-semibold text-[#102347]">
-                {user?.createdAt || "December 2025"}
+                {user?.metadata.creationTime || "December 2025"}
               </p>
             </div>
           </div>
@@ -53,15 +84,15 @@ const AdminProfile = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white shadow rounded-xl p-6 text-center">
           <p className="text-sm text-gray-500">Total Scholarships</p>
-          <p className="text-2xl font-bold text-[#102347]">0</p>
+          <p className="text-2xl font-bold text-[#102347]">{scholarships.length}</p>
         </div>
         <div className="bg-white shadow rounded-xl p-6 text-center">
           <p className="text-sm text-gray-500">Total Users</p>
-          <p className="text-2xl font-bold text-[#102347]">0</p>
+          <p className="text-2xl font-bold text-[#102347]">{users.length}</p>
         </div>
         <div className="bg-white shadow rounded-xl p-6 text-center">
           <p className="text-sm text-gray-500">Total Fees Collected</p>
-          <p className="text-2xl font-bold text-[#102347]">$0</p>
+          <p className="text-2xl font-bold text-[#102347]">${totalFees}</p>
         </div>
       </div>
 

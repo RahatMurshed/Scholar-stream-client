@@ -79,7 +79,8 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'dashboard-home',
-        Component: DashboardHome
+        Component: DashboardHome,
+        
       },
       {
         path: 'my-applications',
