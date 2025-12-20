@@ -141,7 +141,7 @@ const ManageApplications = () => {
                 <td className="px-4 py-3">{app.scholarshipName}</td>
                 <td className="px-4 py-3">{app.universityName}</td>
                 <td className="px-4 py-3">{app.feedback}</td>
-                <td className={`px-4 py-3 capitalize font-semibold ${app.applicationStatus === 'processing'&& "text-yellow-600"} ${app.applicationStatus === 'pending'&& "text-yellow-600"} ${app.applicationStatus === 'Rejected'&& "text-red-600"}  ${app.applicationStatus === 'completed'&& "text-green-600"}`}>{app.applicationStatus}</td>
+                <td className={`px-4 py-3 capitalize font-semibold ${app.applicationStatus === 'Processing'&& "text-yellow-600"} ${app.applicationStatus === 'Pending'&& "text-yellow-600"} ${app.applicationStatus === 'Rejected'&& "text-red-600"}  ${app.applicationStatus === 'Completed'&& "text-green-600"}`}>{app.applicationStatus}</td>
                 <td className="px-4 py-3">{app.paymentStatus}</td>
                 <td className="px-4 py-3 space-x-1">
                   <button
@@ -161,9 +161,9 @@ const ManageApplications = () => {
                     value={app.status}
                     className="border rounded py-1"
                   >
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Completed">Completed</option>
                   </select>
                   {
                     app.applicationStatus === 'Pending' || app.applicationStatus === 'processing' ? <button

@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import { useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import useAxios from "../../../Hooks/useAxios";
+
 
 
 const RegisterPage = () => {
@@ -36,6 +36,8 @@ const RegisterPage = () => {
           email: data.email,
           displayName: data.name,
           photoURL: data.photoURL,
+          created_at: new Date(),
+          role:'Student'
 
         }
 
@@ -84,6 +86,8 @@ const RegisterPage = () => {
           email: loggedUser.email,
           displayName: loggedUser.displayName,
           photoURL: loggedUser.photoURL,
+          created_at: new Date(),
+          role:'Student'
         }
 
         axiosSecure.post('/users', userInfo)
