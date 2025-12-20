@@ -63,16 +63,16 @@ const ManageApplications = () => {
   const updateStatus = (id, newStatus) => {
 
     const updatedData = {
-      applicationStatus:newStatus
+      applicationStatus: newStatus
     }
- axiosSecure.patch(`/application/${id}/status`, updatedData)
+    axiosSecure.patch(`/application/${id}/status`, updatedData)
       .then(res => {
         console.log(res.data);
         if (res.data.modifiedCount) {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Your status has been saved",
+            title: "Your status has been changed",
             showConfirmButton: false,
             timer: 1500
           });
@@ -83,7 +83,34 @@ const ManageApplications = () => {
   };
 
   const cancelApplication = (id) => {
+    const updatedData = {
+      applicationStatus: "Rejected"
+    };
 
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Reject"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/application/${id}/status`, updatedData)
+          .then(res => {
+            console.log(res.data);
+            if (res.data.modifiedCount) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "You rejected the application",
+                icon: "success"
+              });
+              refetch();
+            }
+          })
+      }
+    });
   };
 
   return (
@@ -137,13 +164,13 @@ const ManageApplications = () => {
                     <option value="completed">Completed</option>
                   </select>
                   {
-                    app.applicationStatus === 'completed'|| <button
-                    onClick={() => cancelApplication(app.id)}
-                    className="bg-red-600 text-white p-1 rounded hover:bg-red-700"
-                  >
-                    <MdOutlineCancel className="w-4 h-4" />
+                    app.applicationStatus === 'completed' || <button
+                      onClick={() => cancelApplication(app._id)}
+                      className="bg-red-600 text-white p-1 rounded hover:bg-red-700"
+                    >
+                      <MdOutlineCancel className="w-4 h-4" />
 
-                  </button>
+                    </button>
                   }
                 </td>
               </tr>
