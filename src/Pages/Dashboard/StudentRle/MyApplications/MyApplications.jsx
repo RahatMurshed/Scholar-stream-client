@@ -1,34 +1,49 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { CgDetailsMore } from "react-icons/cg";
+import { FaEdit } from "react-icons/fa";
+import { MdDeleteOutline, MdOutlineReviews, MdPayment } from "react-icons/md";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import useAuth from "../../../../Hooks/useAuth";
+import Button from '../../../../Components/Button'
+import { Link } from "react-router";
 
-// Example data (replace with API/DB data)
-const applicationsData = [
-  {
-    id: 1,
-    universityName: "Oxford University",
-    universityAddress: "Oxford, UK",
-    feedback: "Strong candidate, awaiting payment",
-    subjectCategory: "Computer Science",
-    applicationFees: 100,
-    applicationStatus: "pending",
-    paymentStatus: "unpaid",
-  },
-  {
-    id: 2,
-    universityName: "Harvard University",
-    universityAddress: "Cambridge, MA, USA",
-    feedback: "Excellent profile",
-    subjectCategory: "Economics",
-    applicationFees: 120,
-    applicationStatus: "completed",
-    paymentStatus: "paid",
-  },
-];
 
 const MyApplications = () => {
+
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+
+  const { data: applicationsData = [], refetch } = useQuery({
+    queryKey: ['applicationData', user.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/my-applications?email=${user.email}`);
+      console.log(res.data);
+      return res.data;
+    }
+  })
+
   const [selectedApp, setSelectedApp] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const [review, setReview] = useState({ rating: 0, comment: "" });
+
+  const handlePayment = async (app) => {
+    const totalAmount = parseInt(app.applicationFees) + parseInt(app.serviceCharge);
+    console.log(totalAmount)
+
+    const paymentInfo = {
+      price: totalAmount,
+      id: app.scholarshipId,
+      customerEmail: user.email,
+      scholarshipName: app.scholarshipName
+
+    }
+
+    const res = await axiosSecure.post('/checkout', paymentInfo);
+    console.log(res.data);
+    window.location.href = res.data.url;
+  }
 
   const openDetails = (app) => {
     setSelectedApp(app);
@@ -47,7 +62,7 @@ const MyApplications = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-8xl mx-auto">
       <h1 className="text-3xl font-serif font-bold text-[#102347] mb-8">
         My Applications
       </h1>
@@ -57,52 +72,62 @@ const MyApplications = () => {
         <table className="min-w-full text-left text-sm">
           <thead className="bg-[#102347] text-white">
             <tr>
+              <th className="px-4 py-3">Scholarship Name</th>
               <th className="px-4 py-3">University Name</th>
-              <th className="px-4 py-3">University Address</th>
+
               <th className="px-4 py-3">Feedback</th>
-              <th className="px-4 py-3">Subject Category</th>
-              <th className="px-4 py-3">Application Fees</th>
-              <th className="px-4 py-3">Application Status</th>
+              <th className="px-4 py-3">Category</th>
+              <th className="px-4 py-3">Fees</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Payment Status</th>
               <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {applicationsData.map((app) => (
-              <tr key={app.id} className="border-b hover:bg-gray-50">
+              <tr key={app._id} className="border-b hover:bg-gray-50">
+                <td className="px-4 py-3">{app.scholarshipName}</td>
                 <td className="px-4 py-3">{app.universityName}</td>
-                <td className="px-4 py-3">{app.universityAddress}</td>
+
                 <td className="px-4 py-3">{app.feedback}</td>
                 <td className="px-4 py-3">{app.subjectCategory}</td>
-                <td className="px-4 py-3">${app.applicationFees}</td>
+                <td className="px-4 py-3">${parseInt(app.applicationFees) + parseInt(app.serviceCharge)}</td>
                 <td className="px-4 py-3 capitalize">{app.applicationStatus}</td>
+                <td className="px-4 py-3 capitalize">{app.paymentStatus}</td>
                 <td className="px-4 py-3 space-x-2 space-y-2">
                   {/* Details */}
                   <button
                     onClick={() => openDetails(app)}
-                    className="bg-blue-600 text-white text-[12px] px-3 py-1 rounded hover:bg-blue-700 font-semibold"
+                    className="bg-blue-600 text-white text-[12px] p-2 rounded hover:bg-blue-700 font-semibold"
                   >
-                    Details
+                    <CgDetailsMore className="w-4 h-4" />
+
                   </button>
 
                   {/* Edit (pending only) */}
-                  {app.applicationStatus === "pending" && (
-                    <button className="bg-purple-600 text-white px-3 py-1 rounded text-[12px] hover:bg-purple-800 font-semibold">
-                      Edit
+                  {app.applicationStatus === "Pending" && (
+                    <button className="bg-purple-600 text-white p-2 rounded text-[12px] hover:bg-purple-800 font-semibold">
+                      <FaEdit className="w-4 h-4" />
+
                     </button>
                   )}
 
                   {/* Pay (pending + unpaid) */}
-                  {app.applicationStatus === "pending" &&
-                    app.paymentStatus === "unpaid" && (
-                      <button className="bg-green-600 text-white px-[13px] py-1 rounded text-[12px]  hover:bg-green-700 font-semibold">
-                        Pay
+                  {app.applicationStatus === "Pending" &&
+                    app.paymentStatus === "Unpaid" && (
+                      <button
+                        onClick={() => { handlePayment(app) }}
+                        className="bg-green-600 text-white p-2 rounded text-[12px]  hover:bg-green-700 font-semibold">
+                        <MdPayment className="w-4 h-4" />
+
                       </button>
                     )}
 
                   {/* Delete (pending only) */}
-                  {app.applicationStatus === "pending" && (
-                    <button className="bg-red-600 text-white text-[12px] px-3 py-1 rounded hover:bg-red-700 font-semibold">
-                      Delete
+                  {app.applicationStatus === "Pending" && (
+                    <button className="bg-red-600 text-white text-[12px] p-2 rounded hover:bg-red-700 font-semibold">
+                      <MdDeleteOutline className="w-4 h-4" />
+
                     </button>
                   )}
 
@@ -110,14 +135,30 @@ const MyApplications = () => {
                   {app.applicationStatus === "completed" && (
                     <button
                       onClick={() => openReview(app)}
-                      className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700"
+                      className="bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
                     >
-                      Add Review
+                      <MdOutlineReviews className="h-4 w-5" />
                     </button>
                   )}
                 </td>
+
               </tr>
+
+
+
             ))}
+            {applicationsData.length === 0 && (
+              <tr>
+                <td
+                  colSpan="9"
+                  className="text-center text-gray-500 py-6 font-medium"
+                >
+                  <p>No application available for the user.</p>
+                  <Link to='/all-scholarships'><Button label="Browse Scholarship" className="mt-3"></Button></Link>
+                </td>
+
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

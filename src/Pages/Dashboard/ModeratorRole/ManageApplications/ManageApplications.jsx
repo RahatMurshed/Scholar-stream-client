@@ -125,6 +125,7 @@ const ManageApplications = () => {
             <tr>
               <th className="px-4 py-3">Applicant Name</th>
               <th className="px-4 py-3">Applicant Email</th>
+              <th className="px-4 py-3">Scholarship Name</th>
               <th className="px-4 py-3">University Name</th>
               <th className="px-4 py-3">Feedback</th>
               <th className="px-4 py-3">Status</th>
@@ -137,9 +138,10 @@ const ManageApplications = () => {
               <tr key={app._id} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-3">{app.userName}</td>
                 <td className="px-4 py-3">{app.userEmail}</td>
+                <td className="px-4 py-3">{app.scholarshipName}</td>
                 <td className="px-4 py-3">{app.universityName}</td>
                 <td className="px-4 py-3">{app.feedback}</td>
-                <td className="px-4 py-3 capitalize">{app.applicationStatus}</td>
+                <td className={`px-4 py-3 capitalize font-semibold ${app.applicationStatus === 'processing'&& "text-yellow-600"} ${app.applicationStatus === 'pending'&& "text-yellow-600"} ${app.applicationStatus === 'Rejected'&& "text-red-600"}  ${app.applicationStatus === 'completed'&& "text-green-600"}`}>{app.applicationStatus}</td>
                 <td className="px-4 py-3">{app.paymentStatus}</td>
                 <td className="px-4 py-3 space-x-1">
                   <button
@@ -164,13 +166,13 @@ const ManageApplications = () => {
                     <option value="completed">Completed</option>
                   </select>
                   {
-                    app.applicationStatus === 'completed' || <button
+                    app.applicationStatus === 'Pending' || app.applicationStatus === 'processing' ? <button
                       onClick={() => cancelApplication(app._id)}
                       className="bg-red-600 text-white p-1 rounded hover:bg-red-700"
                     >
                       <MdOutlineCancel className="w-4 h-4" />
 
-                    </button>
+                    </button>:null
                   }
                 </td>
               </tr>

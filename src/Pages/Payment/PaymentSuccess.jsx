@@ -24,7 +24,7 @@ const PaymentSuccess = () => {
             })
         }
 
-    },[sessionId, axiosSecure])
+    },[sessionId, axiosSecure, setPaymentInfo])
     
 
   return (
