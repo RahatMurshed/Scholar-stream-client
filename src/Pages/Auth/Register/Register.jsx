@@ -23,11 +23,11 @@ const RegisterPage = () => {
   } = useForm();
 
   const handleRegister = (data) => {
-    console.log("Form Submitted:", data);
+    // console.log("Form Submitted:", data);
     registerUser(data.email, data.password)
       .then(result => {
         const createdUser = result.user;
-        console.log(createdUser);
+        // console.log(createdUser);
         setUser(createdUser);
         setPhoto(data.photoUrl);
 
@@ -79,7 +79,7 @@ const RegisterPage = () => {
     googleLogin()
       .then(result => {
         const loggedUser = result.user;
-        console.log(loggedUser);
+        // console.log(loggedUser);
         setUser(loggedUser);
 
         const userInfo = {
@@ -106,7 +106,7 @@ const RegisterPage = () => {
 
 
       }
-      console.log(location.state)
+      // console.log(location.state)
 
   return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">

@@ -15,7 +15,7 @@ const AllScholarshipsPage = () => {
     queryKey: ['scholarships', filters],
     queryFn: async () => {
       const res = await axios.get('/scholarships');
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     }
   })
@@ -29,7 +29,7 @@ const AllScholarshipsPage = () => {
       funding: e.target.funding.value
     }
     setFilters(filterData);
-    console.log("Filters applied:", filterData);
+    // console.log("Filters applied:", filterData);
     }
   
   if(isLoading){

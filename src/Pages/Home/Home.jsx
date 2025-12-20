@@ -15,7 +15,7 @@ const Home = () => {
     queryKey: ["topScholarships", 'top-scholarships'],
     queryFn: async () => {
         const res = await axios.get('/top-scholarships');
-        console.log(res.data);
+        // console.log(res.data);
         return res.data;
     },
   });

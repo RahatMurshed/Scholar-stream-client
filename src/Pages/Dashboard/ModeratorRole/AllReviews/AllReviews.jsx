@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
@@ -11,7 +10,7 @@ const AllReviews = () => {
     queryKey: ['all-reviews'],
     queryFn: async () => {
       const res = await axiosSecure.get('/reviews')
-      console.log(res.data)
+      // console.log(res.data)
       return res.data
     }
   })
@@ -32,7 +31,7 @@ const AllReviews = () => {
 
         axiosSecure.delete(`/reviews/${id}`)
           .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.deletedCount) {
               Swal.fire({
                 title: "Deleted!",

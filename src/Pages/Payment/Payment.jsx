@@ -19,7 +19,7 @@ const Payment = () => {
         queryKey: ['scholarship', id],
         queryFn: async ()=>{
            const res = await axiosSecure.get(`/scholarship/${id}`)
-           console.log(res.data)
+          //  console.log(res.data)
             return res.data;
         }
     })
@@ -75,7 +75,7 @@ const Payment = () => {
         
 
         const res = await axiosSecure.post('/checkout', paymentInfo);
-        console.log(res.data);
+        // console.log(res.data);
         window.location.href = res.data.url;
 
         axiosSecure.post('/application', applicationInfo)

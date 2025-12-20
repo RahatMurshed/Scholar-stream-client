@@ -17,7 +17,7 @@ const MyReviews = () => {
     queryKey: ['reviews', user.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/reviews?email=${user.email}`)
-      console.log(res.data)
+      // console.log(res.data)
       return res.data;
     }
   })
@@ -34,14 +34,14 @@ const MyReviews = () => {
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
-    console.log(selectedReview)
+    // console.log(selectedReview)
     const updatedData = {
       ratingPoint: e.target.rating.value,
       reviewComment: e.target.comment.value
     }
     axiosSecure.patch(`/reviews/${selectedReview._id}`, updatedData)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.modifiedCount) {
           Swal.fire({
             title: "Edited!",
@@ -70,7 +70,7 @@ const MyReviews = () => {
 
         axiosSecure.delete(`/reviews/${id}`)
           .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.deletedCount) {
               Swal.fire({
                 title: "Deleted!",

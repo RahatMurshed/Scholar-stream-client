@@ -19,7 +19,7 @@ import useRoles from "../Hooks/useRoles";
 
 const DashboardLayout = () => {
   const { role } = useRoles();
-  console.log(role)
+  // console.log(role)
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isOpen, setIsOpen] = useState(true); // sidebar open/close
 

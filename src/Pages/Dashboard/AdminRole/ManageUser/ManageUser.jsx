@@ -34,7 +34,7 @@ const ManageUsers = () => {
 
                 axiosSecure.delete(`/user/${id}`)
                     .then(res => {
-                        console.log(res.data)
+                        // console.log(res.data)
                         if (res.data.deletedCount) {
                             Swal.fire({
                                 title: "Deleted!",
@@ -51,8 +51,8 @@ const ManageUsers = () => {
     };
 
     const handleRoleChange = (user, newRole) => {
-        console.log(newRole)
-        console.log(user)
+        // console.log(newRole)
+        // console.log(user)
         const updatedData = {
             role: newRole
         }
@@ -71,7 +71,7 @@ const ManageUsers = () => {
 
                 axiosSecure.patch(`/user/${user._id}`, updatedData)
                     .then(res => {
-                        console.log(res.data);
+                        // console.log(res.data);
                         if (res.data.modifiedCount) {
                             Swal.fire({
                                 title: "Changed!",

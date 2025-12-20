@@ -22,6 +22,7 @@ import Analytics from "../Pages/Dashboard/AdminRole/Analytics/Analytics";
 import ManageUsers from "../Pages/Dashboard/AdminRole/ManageUser/ManageUser";
 import ManageScholarships from "../Pages/Dashboard/AdminRole/ManageScholarship/ManageScholarship";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+import NotFound from "../Pages/404/NotFound";
 
 
 export const router = createBrowserRouter([
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: '/all-scholarships',
         Component: AllScholarships
+      },
+      {
+        path: '*',
+        element: <NotFound></NotFound>
       },
       {
         path: '/scholarship-details/:id',

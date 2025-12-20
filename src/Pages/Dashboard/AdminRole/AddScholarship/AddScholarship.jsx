@@ -15,11 +15,11 @@ const AddScholarship = () => {
 
 
     const handleScholarshipData = (data) => {
-        console.log("Scholarship submitted:", data);
+        // console.log("Scholarship submitted:", data);
 
         axiosSecure.post('/scholarships', data)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 if (res.data.insertedId) {
                     Swal.fire({
                         position: "center",

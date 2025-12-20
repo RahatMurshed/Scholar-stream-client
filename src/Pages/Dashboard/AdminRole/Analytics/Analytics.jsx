@@ -72,10 +72,10 @@ const Analytics = () => {
  
 
   const totalFees = feesCollected.map(app=> app.applicationFees + app.serviceCharge)
-  console.log(totalFees)
+  // console.log(totalFees)
 
 
-console.log(applicationStatsByUniversity)
+// console.log(applicationStatsByUniversity)
 
 
 

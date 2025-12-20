@@ -6,7 +6,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AdminProfile = () => {
   const { user } = useAuth();
-  console.log(user)
+  // console.log(user)
   const axiosSecure = useAxiosSecure();
 
   const { data: scholarships = [] } = useQuery({
@@ -34,7 +34,7 @@ const AdminProfile = () => {
   })
 
   const totalFees = feesCollected.map(app=> app.applicationFees + app.serviceCharge)
-  console.log(totalFees)
+  // console.log(totalFees)
 
   return (
     <div className="max-w-6xl mx-auto space-y-10">

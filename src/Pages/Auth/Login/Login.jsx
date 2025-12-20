@@ -18,11 +18,11 @@ const Login = () => {
   } = useForm();
 
   const handleLogin = (data) => {
-    console.log("Login Submitted:", data);
+    // console.log("Login Submitted:", data);
     login(data.email, data.password)
     .then(result=>{
       const loggedUser = result.user;
-      console.log(loggedUser);
+      // console.log(loggedUser);
       setUser(loggedUser);
        navigate(location.state || '/')
     })
@@ -39,7 +39,7 @@ const Login = () => {
     googleLogin()
     .then(result=>{
       const loggedUser = result.user;
-      console.log(loggedUser);
+      // console.log(loggedUser);
       setUser(loggedUser);
        navigate(location.state || '/');
     })
@@ -50,7 +50,7 @@ const Login = () => {
 
   }
 
-  console.log(location.state)
+  // console.log(location.state)
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">

@@ -27,7 +27,7 @@ const ManageScholarships = () => {
     // const [selectedScholarship, setSelectedScholarship] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedScholarship, setSelectedScholarship] = useState({});
-    console.log(selectedScholarship)
+    // console.log(selectedScholarship)
     const {
         register,
         handleSubmit,
@@ -49,7 +49,7 @@ const ManageScholarships = () => {
 
                 axiosSecure.delete(`/scholarship/${id}`)
                     .then(res => {
-                        console.log(res.data);
+                        // console.log(res.data);
                         if (res.data.deletedCount) {
                             Swal.fire({
                                 title: "Deleted!",
@@ -68,10 +68,10 @@ const ManageScholarships = () => {
 
 
     const handleEdit = (data) => {
-        console.log(data);
+        // console.log(data);
         axiosSecure.patch(`/scholarship/${selectedScholarship._id}`, data)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 if (res.data.modifiedCount) {
                     Swal.fire({
                         position: "center",

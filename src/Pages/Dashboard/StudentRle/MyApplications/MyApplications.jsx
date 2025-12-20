@@ -20,7 +20,7 @@ const MyApplications = () => {
     queryKey: ['applicationData', user.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-applications?email=${user.email}`);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     }
   })
@@ -34,7 +34,7 @@ const MyApplications = () => {
   const handlePayment = async (app) => {
 
     const totalAmount = parseInt(app.applicationFees) + parseInt(app.serviceCharge);
-    console.log(totalAmount)
+    // console.log(totalAmount)
 
     const paymentInfo = {
       price: totalAmount,
@@ -45,7 +45,7 @@ const MyApplications = () => {
     }
 
     const res = await axiosSecure.post('/checkout', paymentInfo);
-    console.log(res.data);
+    // console.log(res.data);
     window.location.href = res.data.url;
   }
 
@@ -75,7 +75,7 @@ const MyApplications = () => {
     }
     axiosSecure.post('/reviews', newReview)
     .then(res=>{
-      console.log(res.data);
+      // console.log(res.data);
       if(res.data.insertedId){
         Swal.fire({
             title: "Saved!",
@@ -103,7 +103,7 @@ const MyApplications = () => {
 
     axiosSecure.patch(`/application/${selectedApp._id}`, updatedData)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.modifiedCount) {
           Swal.fire({
             title: "Updated!",
@@ -133,7 +133,7 @@ const MyApplications = () => {
 
         axiosSecure.delete(`/application/${app._id}`)
           .then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.deletedCount) {
               Swal.fire({
                 title: "Deleted!",

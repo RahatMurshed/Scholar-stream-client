@@ -5,17 +5,19 @@ import { VscFeedback } from "react-icons/vsc";
 import { CgDetailsMore } from "react-icons/cg";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from "sweetalert2";
+import useAuth from "../../../../Hooks/useAuth";
+import Loader from "../../../../Components/Loader";
 
 
 const ManageApplications = () => {
-
+const {isLoading} = useAuth();
   const axiosSecure = useAxiosSecure();
 
   const { data: applicationsData = [], refetch } = useQuery({
     queryKey: ['applicationData'],
     queryFn: async () => {
       const res = await axiosSecure.get('/applications')
-      console.log(res.data)
+      // console.log(res.data)
       return res.data;
     }
   })
@@ -26,7 +28,7 @@ const ManageApplications = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackText, setFeedbackText] = useState("");
-  console.log(feedbackText)
+  // console.log(feedbackText)
   const openDetails = (applicationsData) => {
     setSelectedApp(applicationsData);
     setShowDetails(true);
@@ -43,7 +45,7 @@ const ManageApplications = () => {
     }
     axiosSecure.patch(`/application/${selectedApp._id}/feedback`, updatedData)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.modifiedCount) {
           Swal.fire({
             position: "center",
@@ -67,7 +69,7 @@ const ManageApplications = () => {
     }
     axiosSecure.patch(`/application/${id}/status`, updatedData)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.modifiedCount) {
           Swal.fire({
             position: "center",
@@ -99,7 +101,7 @@ const ManageApplications = () => {
       if (result.isConfirmed) {
         axiosSecure.patch(`/application/${id}/status`, updatedData)
           .then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.modifiedCount) {
               Swal.fire({
                 title: "Deleted!",
@@ -112,6 +114,11 @@ const ManageApplications = () => {
       }
     });
   };
+
+  if(isLoading){
+    return <Loader></Loader>
+  }
+
 
   return (
     <div className="max-w-8xl mx-auto">
