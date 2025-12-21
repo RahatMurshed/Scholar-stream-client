@@ -21,6 +21,19 @@ const ScholarshipDetails = () => {
     }
     })
 
+
+    const {data: reviews = [] } = useQuery({
+    queryKey: ['reviews', id],
+    queryFn: async ()=>{
+      const res = await axiosSecure.get(`/scholarship-details/reviews?id=${id}`)
+        console.log(res.data);
+        return res.data;
+    
+    }
+    })
+
+    
+
     if(isLoading){
         return <Loader></Loader>
     }
@@ -180,8 +193,57 @@ const ScholarshipDetails = () => {
         </div>
       </section>
 
+
+      <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+  className="max-w-5xl mx-auto mt-12"
+>
+  <h2 className="text-3xl font-serif font-bold text-center text-[#102347] mb-8">
+    Student Reviews
+  </h2>
+
+  {reviews.length > 0 ? (
+    <div className="grid md:grid-cols-2 gap-6">
+      {reviews.map((review) => (
+        <motion.div
+          key={review._id}
+          whileHover={{ scale: 1.02 }}
+          className="bg-white rounded-xl shadow-lg p-6 border border-gray-100"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-lg font-semibold text-[#102347]">
+                {review.userName}
+              </p>
+              <p className="text-sm text-gray-500">{review.userEmail}</p>
+            </div>
+            <span className="text-yellow-500 font-bold">
+              ⭐ {review.ratingPoint}/5
+            </span>
+          </div>
+
+          {/* Comment */}
+          <p className="text-gray-700 leading-relaxed">{review.reviewComment}</p>
+
+          {/* Footer */}
+          <p className="mt-4 text-xs text-gray-400">
+            Posted on {new Date(review.reviewDate).toLocaleDateString()}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-center text-gray-500 mt-6">
+      No reviews yet. Be the first to share your experience!
+    </p>
+  )}
+</motion.div>
+
       {/* Footer Section */}
-      <section className="bg-[#102347] text-white py-12 text-center">
+      <section className="bg-[#102347] text-white py-12 text-center mt-15">
         <h2 className="text-2xl font-serif font-bold mb-4">
           Ready to Apply?
         </h2>
@@ -198,8 +260,11 @@ const ScholarshipDetails = () => {
         </motion.button>
         </Link>
       </section>
-      {/* ToDO: Review Section will be there . Data will come from review collection. */}
-      <h1 className="text-center text-3xl">Reviews</h1>
+     
+
+    
+
+
       <button onClick={()=>{navigate(-1)}} className="btn btn-sm mt-3">Go Back</button>
     </div>
   );

@@ -23,6 +23,7 @@ import ManageUsers from "../Pages/Dashboard/AdminRole/ManageUser/ManageUser";
 import ManageScholarships from "../Pages/Dashboard/AdminRole/ManageScholarship/ManageScholarship";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import NotFound from "../Pages/404/NotFound";
+import ForbiddenAccess from "../Pages/ForbiddenAccess/ForbiddenAccess";
 
 
 export const router = createBrowserRouter([
@@ -46,10 +47,7 @@ export const router = createBrowserRouter([
         path: '/all-scholarships',
         Component: AllScholarships
       },
-      {
-        path: '*',
-        element: <NotFound></NotFound>
-      },
+
       {
         path: '/scholarship-details/:id',
         element: <PrivateRoute>
@@ -85,7 +83,7 @@ export const router = createBrowserRouter([
       {
         path: 'dashboard-home',
         Component: DashboardHome,
-        
+
       },
       {
         path: 'my-applications',
@@ -122,5 +120,13 @@ export const router = createBrowserRouter([
         Component: Analytics,
       },
     ]
+  },
+  {
+    path: '*',
+    element: <NotFound></NotFound>
+  },
+  {
+    path: '/forbidden',
+    Component: ForbiddenAccess
   }
 ]);

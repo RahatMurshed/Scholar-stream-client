@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Loader from "../../../Components/Loader";
 
 
 const AdminProfile = () => {
@@ -9,7 +10,7 @@ const AdminProfile = () => {
   // console.log(user)
   const axiosSecure = useAxiosSecure();
 
-  const { data: scholarships = [] } = useQuery({
+  const { data: scholarships = [] , isLoading} = useQuery({
     queryKey: ['scholarships'],
     queryFn: async () => {
       const res = axiosSecure.get('/scholarships')
@@ -35,6 +36,11 @@ const AdminProfile = () => {
 
   const totalFees = feesCollected.map(app=> app.applicationFees + app.serviceCharge)
   // console.log(totalFees)
+
+
+  if(isLoading){
+    return <Loader></Loader>
+  }
 
   return (
     <div className="max-w-6xl mx-auto space-y-10">
