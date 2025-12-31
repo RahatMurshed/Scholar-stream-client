@@ -1,4 +1,4 @@
-# 📚 ScholarStream
+# ScholarStream
 
 ScholarStream is a **scholarship management platform** designed to connect students, moderators, and administrators in one streamlined system. It provides a recruiter‑ready, premium UI/UX with role‑based dashboards, secure payments, and a polished design identity.
 
