@@ -1,16 +1,54 @@
-# React + Vite
+# 📚 ScholarStream
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ScholarStream is a **scholarship management platform** designed to connect students, moderators, and administrators in one streamlined system. It provides a recruiter‑ready, premium UI/UX with role‑based dashboards, secure payments, and a polished design identity.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+- **Scholarship Listings**
+  - Browse scholarships with detailed information, deadlines, and funding type.
+  - Responsive card layout with premium design polish.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Scholarship Details**
+  - Rich detail pages with reviews, ratings, and application instructions.
+  - Student review system.
 
-## Expanding the ESLint configuration
+- **Role‑Based Dashboards**
+  - **Admin**: Manage scholarships, users, and Analytics.
+  - **Moderator**: Approve/reject scholarships, oversee reviews.
+  - **Student**: Apply for scholarships, track applications, leave reviews.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Authentication**
+  - Firebase authentication (email/password, Google login).
+  - Secure role assignment.
+
+- **Payments**
+  - Stripe integration for scholarship application fees.
+
+- **Error Handling**
+  - Custom **403 Forbidden** page for unauthorized access.
+  - Custom **404 Not Found** page for invalid routes.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js
+- React Router
+- Context API / Hooks
+- TailwindCSS (premium UI styling)
+
+### Backend
+- Node.js + Express
+- MongoDB Atlas
+- Stripe API
+- Firebase Admin SDK
+
+### Deployment
+- **Frontend**: firebase
+- **Backend**: Vercel
+
+---
+
